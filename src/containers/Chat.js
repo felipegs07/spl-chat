@@ -10,7 +10,9 @@ import { tokenUrl, instanceLocator } from '../config';
 export class chat extends Component {
 
   state = {
-    messages: []
+    messages: [],
+    channelsToJoin: [],
+    channelsJoined: []
   }
 
   componentDidMount() {
@@ -28,14 +30,17 @@ export class chat extends Component {
 
       this.currentUser.getJoinableRooms()
         .then(channels => {
-
+          this.setState({
+            channelsToJoin: channels,
+            channelsJoined: this.currentUser.rooms
+          });
         })
         .catch(err => {
           console.log(`Error getting joinable rooms: ${err}`);
         });
 
       this.currentUser.subscribeToRoomMultipart({
-        roomId: '19386955',
+        roomId: '19387426',
         hooks: {
             onMessage: message => {
               const msg = {
@@ -56,7 +61,7 @@ export class chat extends Component {
 
   sendMessage = (msg) => {
     this.currentUser.sendSimpleMessage({
-      roomId: '19386955',
+      roomId: '19387426',
       text: msg
     })
     .catch(err => {
@@ -67,7 +72,7 @@ export class chat extends Component {
   render() {
     return (
       <div className="app">
-        <ChannelList />
+        <ChannelList channels={[...this.state.channelsToJoin, ...this.state.channelsJoined]} />
         <MessageList messages={this.state.messages} />
         <MessageSender sendMessage={this.sendMessage} />
         <NewChannel />

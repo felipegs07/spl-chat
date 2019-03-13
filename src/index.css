@@ -6,6 +6,14 @@
   --send-message-form: #F5F5F5;
 }
 
+button {
+  background-color: transparent;
+  border: 0;
+  font-size: inherit;
+  color: inherit;
+  font-weight: inherit;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -93,21 +101,28 @@ html, body {
 
 .rooms-list li {
   margin: 10px 0;
+  font-size: 1.8rem;
+  transition: all .3s;
+}
+.rooms-list li:hover {
+  background-color: var(--main-text-color);
+  cursor: pointer;
 }
 
 .rooms-list h3 {
   margin: 5px 0;
   color: var(--secondary-color);
+  font-size: 2rem;
 }
 
-.rooms-list .room a {
+.rooms-list .room button {
   color: var(--secondary-text-color);
   font-weight: 600;
   text-decoration: none;
   
 }
 
-.rooms-list .room.active a {
+.rooms-list .room.active button {
   color: var(--secondary-color);
 }
 

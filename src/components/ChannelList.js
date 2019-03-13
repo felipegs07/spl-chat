@@ -3,7 +3,18 @@ import React from 'react';
 const channelList = (props) => {
     return (
         <div className="rooms-list">
-            <div className="help-text">Channel List</div>
+            <ul>
+                <h3>Your channels:</h3>
+                {
+                    props.channels.map(channel => {
+                        return (
+                            <li key={channel.id} className="room">
+                                <button># {channel.name}</button>
+                            </li>
+                        )
+                    })
+                }
+            </ul>
         </div>
     );
 }
