@@ -9,6 +9,10 @@ import { tokenUrl, instanceLocator } from '../config';
 
 export class chat extends Component {
 
+  state = {
+    messages: []
+  }
+
   componentDidMount() {
     const chatManager = new ChatKit.ChatManager({
       instanceLocator,
@@ -20,18 +24,43 @@ export class chat extends Component {
 
     chatManager.connect()
     .then(currentUser => {
+      this.currentUser = currentUser;
 
-      currentUser.fetchMultipartMessages({
-        roomId: '19386955',
-        direction: 'older',
-        limit: 10,
-      })
-        .then(messages => {
-          console.log(messages);
+      this.currentUser.getJoinableRooms()
+        .then(channels => {
+
         })
         .catch(err => {
-          console.log(`Error fetching messages: ${err}`)
-        })
+          console.log(`Error getting joinable rooms: ${err}`);
+        });
+
+      this.currentUser.subscribeToRoomMultipart({
+        roomId: '19386955',
+        hooks: {
+            onMessage: message => {
+              const msg = {
+                id: message.id,
+                text: message.parts[0].payload.content,
+                senderId: message.senderId
+              }
+
+              this.setState({
+                messages:[...this.state.messages, msg]
+              });
+            }
+          },
+          messageLimit: 10
+      })
+    });
+  }
+
+  sendMessage = (msg) => {
+    this.currentUser.sendSimpleMessage({
+      roomId: '19386955',
+      text: msg
+    })
+    .catch(err => {
+      console.log(`Error adding message: ${err}`);
     });
   }
 
@@ -39,8 +68,8 @@ export class chat extends Component {
     return (
       <div className="app">
         <ChannelList />
-        <MessageList />
-        <MessageSender />
+        <MessageList messages={this.state.messages} />
+        <MessageSender sendMessage={this.sendMessage} />
         <NewChannel />
       </div>
     )

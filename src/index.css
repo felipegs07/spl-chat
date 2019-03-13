@@ -6,6 +6,25 @@
   --send-message-form: #F5F5F5;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--secondary-color); 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-text-color); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--main-text-color); 
+}
+
 html {
   font-size: 62.5%;
 }
@@ -62,6 +81,7 @@ html, body {
   padding: 10px;
   background-color: var(--main-color);
   overflow: scroll;
+  overflow-x: hidden;
   height: 100%;
 }
 
@@ -105,15 +125,23 @@ html, body {
 }
 
 .new-room-form input {
-  width: 135px;
+  width: 13.5rem;
   background: var(--secondary-color);
 }
 
 .new-room-form button {
-  background: var(--secondary-color);
-  color: var(--main-text-color);
+  background: var(--main-text-color);
+  color: var(--secondary-color);
   border: 0;
-} 
+  height: 100%;
+  transition: all .3s;
+}
+
+.new-room-form button:hover {
+  cursor: pointer;
+  background: var(--secondary-text-color);
+  color: var(--main-text-color);
+}
 
 .new-room-form input::placeholder {
   color: var(--main-text-color);
