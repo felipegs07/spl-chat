@@ -28,38 +28,51 @@ export class chat extends Component {
     .then(currentUser => {
       this.currentUser = currentUser;
 
-      this.currentUser.getJoinableRooms()
-        .then(channels => {
-          this.setState({
-            channelsToJoin: channels,
-            channelsJoined: this.currentUser.rooms
-          });
-        })
-        .catch(err => {
-          console.log(`Error getting joinable rooms: ${err}`);
-        });
-
-      this.currentUser.subscribeToRoomMultipart({
-        roomId: '19387426',
-        hooks: {
-            onMessage: message => {
-              const msg = {
-                id: message.id,
-                text: message.parts[0].payload.content,
-                senderId: message.senderId
-              }
-
-              this.setState({
-                messages:[...this.state.messages, msg]
-              });
-            }
-          },
-          messageLimit: 10
-      })
+      this.handleSubscribeToRoom('19387426');
+      this.handleGetRooms();
+      
     });
   }
 
-  sendMessage = (msg) => {
+  handleGetRooms = () => {
+    this.currentUser.getJoinableRooms()
+      .then(channels => {
+        this.setState({
+          channelsToJoin: channels,
+          channelsJoined: this.currentUser.rooms
+        });
+      })
+      .catch(err => {
+        console.log(`Error getting joinable rooms: ${err}`);
+      });
+      
+  }
+  
+
+  handleSubscribeToRoom = (id) => {
+    this.setState({
+      messages: []
+    });
+    this.currentUser.subscribeToRoomMultipart({
+      roomId: id,
+      hooks: {
+          onMessage: message => {
+            const msg = {
+              id: message.id,
+              text: message.parts[0].payload.content,
+              senderId: message.senderId
+            }
+
+            this.setState({
+              messages:[...this.state.messages, msg]
+            });
+          }
+        },
+        messageLimit: 10
+    });
+  }
+
+  handleSendMessage = (msg) => {
     this.currentUser.sendSimpleMessage({
       roomId: '19387426',
       text: msg
@@ -72,9 +85,9 @@ export class chat extends Component {
   render() {
     return (
       <div className="app">
-        <ChannelList channels={[...this.state.channelsToJoin, ...this.state.channelsJoined]} />
+        <ChannelList channels={[...this.state.channelsToJoin, ...this.state.channelsJoined]} subscribeToRoom={this.handleSubscribeToRoom}/>
         <MessageList messages={this.state.messages} />
-        <MessageSender sendMessage={this.sendMessage} />
+        <MessageSender sendMessage={this.handleSendMessage} />
         <NewChannel />
       </div>
     )
