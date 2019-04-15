@@ -20,7 +20,7 @@ button {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: var(--secondary-color); 
+  background: transparent; 
 }
  
 /* Handle */
@@ -45,7 +45,7 @@ html, body {
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   font-weight: 200;
-  color: 	#3e5869; 
+  color: var(--main-text-color);
   box-sizing: border-box;
 }
 
@@ -87,10 +87,11 @@ html, body {
 .rooms-list {
   box-sizing: border-box;
   padding: 10px;
-  background-color: var(--main-color);
+  background-color: var(--send-message-form);
   overflow: scroll;
   overflow-x: hidden;
   height: 100%;
+  border-right: 1px solid rgba(0, 0, 0, .2);
 }
 
 .rooms-list ul {
@@ -105,27 +106,28 @@ html, body {
   transition: all .3s;
 }
 .rooms-list li:hover {
-  background-color: var(--main-text-color);
+  background-color: var(--secondary-text-color);
   cursor: pointer;
 }
 
 .rooms-list h3 {
   margin: 5px 0;
-  color: var(--secondary-color);
+  color: var(--main-text-color);
   font-size: 2rem;
 }
 
-.rooms-list .room button {
-  color: var(--secondary-text-color);
+.rooms-list .room p {
+  color: var(--main-text-color);
   font-weight: 600;
   text-decoration: none;
   
 }
 
-.rooms-list .room.active button {
+.rooms-list .room.active p {
   color: var(--secondary-color);
 }
 
+/*Create room component*/
 .new-room-form {
   padding: 0 5px;
   background: var(--secondary-color);

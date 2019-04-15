@@ -8,8 +8,8 @@ const channelList = (props) => {
                 {
                     props.channels.map(channel => {
                         return (
-                            <li key={channel.id} className="room">
-                                <button onClick={() => { props.subscribeToRoom(channel.id) }}># {channel.name}</button>
+                            <li onClick={() => { props.subscribeToRoom(channel.id) }} key={channel.id} className="room">
+                                <p># {channel.name}</p>
                             </li>
                         )
                     })
